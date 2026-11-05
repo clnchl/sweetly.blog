@@ -9,6 +9,7 @@
     "lint": "eslint",
     "db:generate": "prisma generate",
     "db:validate": "prisma validate",
+    "db:import-recipes": "node scripts/import-recipes.mjs",
     "db:migrate": "prisma migrate dev --name init"
   },
   "dependencies": {

@@ -1,13 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { categories, recipes } from "@/data/recipes";
+import { useEffect, useMemo, useState } from "react";
+import { categories } from "@/data/recipes";
+import type { Recipe } from "@/lib/recipe";
 import { RecipeCard } from "@/components/recipe-card";
 import { SiteHeader } from "@/components/site-header";
 
 export default function RecipesPage() {
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState("Toutes");
+    const [recipes, setRecipes] = useState<Recipe[]>([]);
+    useEffect(() => { fetch("/api/recipes").then((response) => response.ok ? response.json() : Promise.reject()).then(setRecipes).catch(() => setRecipes([])); }, []);
     const filtered = useMemo(() => recipes.filter((recipe) => {
         const matchesCategory = category === "Toutes" || recipe.category === category;
         const haystack = `${recipe.title} ${recipe.category} ${recipe.description} ${recipe.ingredients.join(" ")}`.toLowerCase();

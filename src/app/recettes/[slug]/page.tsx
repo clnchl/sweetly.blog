@@ -1,16 +1,15 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getRecipe, recipes } from "@/data/recipes";
 import { SiteHeader } from "@/components/site-header";
-
-export function generateStaticParams() {
-    return recipes.map((recipe) => ({ slug: recipe.slug }));
-}
+import { LikeButton } from "@/components/like-button";
+import { prisma } from "@/lib/prisma";
+import { toRecipe } from "@/lib/recipe";
 
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const recipe = getRecipe(slug);
-    if (!recipe) notFound();
+    const record = await prisma.recipe.findUnique({ where: { slug }, include: { category: true, ingredients: { orderBy: { order: "asc" } }, utensils: { orderBy: { order: "asc" } }, instructions: { orderBy: { step: "asc" } } } });
+    if (!record) notFound();
+    const recipe = toRecipe(record);
 
     return <>
         <SiteHeader />
@@ -21,7 +20,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                 <div>
                     <p className="eyebrow">{recipe.category}</p>
                     <h1 className="display mt-4 text-6xl font-semibold leading-none md:text-8xl">{recipe.title}</h1>
-                    <p className="mt-7 max-w-xl text-lg leading-8 text-[var(--ink-soft)]">{recipe.description}</p>
+                    <p className="mt-7 max-w-xl text-lg leading-8 text-[var(--ink-soft)]">{recipe.description}</p><LikeButton slug={recipe.slug} initialLikes={recipe.likes} />
                     <div className="my-8 grid grid-cols-3 gap-3 border-y border-[var(--line)] py-5 text-sm">
                         <div><p className="text-[var(--ink-soft)]">Préparation</p><strong>{recipe.prep}</strong></div>
                         <div><p className="text-[var(--ink-soft)]">Cuisson</p><strong>{recipe.bake}</strong></div>
