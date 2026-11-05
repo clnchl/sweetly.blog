@@ -8,7 +8,7 @@ const socials = [
 ];
 
 export function SiteFooter() {
-  return <footer className="bg-[var(--header)] px-6 py-8 text-center text-white">
+  return <footer className="mt-16 bg-[var(--header)] px-6 md:mt-24 py-8 text-center text-white">
     <p className="text-lg font-bold">©2025 Sweetly</p>
     <ul className="mt-5 flex justify-center gap-6 md:gap-8">
       {socials.map((social) => {

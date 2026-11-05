@@ -26,7 +26,7 @@ const sections = [
 export default function PrivacyPage() {
   return <>
     <SiteHeader />
-    <main className="site-shell !py-16 md:!py-24">
+    <main className="site-shell !pt-16 md:!pt-24">
       <div className="max-w-3xl">
         <h1 className="display text-[clamp(2.5rem,12.5vw,3rem)] font-semibold md:text-6xl">Politique de confidentialité</h1>
         {sections.map((section) => <section key={section.title} className="mt-10">
@@ -35,7 +35,7 @@ export default function PrivacyPage() {
         </section>)}
         <section className="mt-10">
           <h2 className="display text-3xl font-semibold">Contact</h2>
-          <p className="mt-3 leading-7 text-[var(--ink-soft)]">Pour toute question, vous pouvez me joindre via la page <Link href="/contact" className="font-bold text-[var(--rose-dark)] underline">Contact</Link>.</p>
+          <p className="mt-3 leading-7 text-[var(--ink-soft)]">Pour toute question, vous pouvez me joindre via la page <Link href="/contact" className="font-bold !text-[var(--rose-dark)] !underline">Contact</Link>.</p>
         </section>
       </div>
     </main>
