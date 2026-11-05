@@ -32,7 +32,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
                 <div>
                     <p className="eyebrow">{recipe.category}</p>
                     <h1 className="display mt-4 text-[clamp(3rem,15vw,3.75rem)] font-semibold leading-none md:text-8xl">{recipe.title}</h1>
-                    <p className="mt-7 max-w-xl text-lg leading-8 text-[var(--ink-soft)]">{recipe.description}</p>
+                    
                     <div className="my-8 grid grid-cols-3 gap-3 border-y border-[var(--line)] py-5 text-sm">
                         <div><p className="text-[var(--ink-soft)]">Préparation</p><strong>{recipe.prep}</strong></div>
                         <div><p className="text-[var(--ink-soft)]">Cuisson</p><strong>{recipe.bake}</strong></div>
