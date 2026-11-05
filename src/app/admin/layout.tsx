@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Espace créateur | Sweetly",
+  title: "Sweetly - Espace créateur",
   robots: { index: false, follow: false },
 };
 

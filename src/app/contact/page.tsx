@@ -1,6 +1,8 @@
 import { SiteHeader } from "@/components/site-header";
 import { FaInstagram, FaLinkedinIn, FaTiktok } from "react-icons/fa6";
 
+export const metadata = { title: "Sweetly - Contact" };
+
 const socials = [
     { name: "Instagram", handle: "@celxne_khh", href: "https://instagram.com/celxne_khh", icon: FaInstagram },
     { name: "LinkedIn", handle: "Céline C.", href: "https://www.linkedin.com/in/c%C3%A9line-c-78bb73266/", icon: FaLinkedinIn },
