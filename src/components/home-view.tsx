@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Recipe } from "@/lib/recipe";
 import { RecipeCard } from "@/components/recipe-card";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export function HomeView({ recipes }: { recipes: Recipe[] }) {
@@ -16,5 +17,6 @@ export function HomeView({ recipes }: { recipes: Recipe[] }) {
             <section className="border-y border-[var(--line)] bg-[#ffe3e3] py-16"><div className="site-shell grid gap-8 md:grid-cols-[.8fr_1.2fr] md:items-center"><p className="eyebrow">Un peu de moi</p><p className="display max-w-3xl text-3xl leading-tight md:text-5xl">Sweetly partage des recettes simples et gourmandes de pâtisserie maison, pour débutants et passionnés.</p></div></section>
             <section id="recettes" className="site-shell py-20"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><h2 className="display text-5xl font-semibold">Recettes ajoutées récemment</h2><Link href="/recettes" className="text-sm font-bold text-[var(--rose-dark)]">Voir toutes les recettes ↗</Link></div><div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{recipes.slice(0, 6).map((recipe) => <RecipeCard key={recipe.slug} recipe={recipe} />)}</div></section>
         </main>
+        <SiteFooter />
     </>;
 }

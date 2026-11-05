@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getPublishedRecipe, getPublishedRecipes } from "@/lib/recipes-data";
 
@@ -44,5 +45,6 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
             </div>
             <section className="mt-20 max-w-3xl"><p className="eyebrow">Pas à pas</p><h2 className="display mt-3 text-5xl font-semibold">La préparation</h2><ol className="mt-8 space-y-6">{recipe.instructions.map((instruction, index) => <li key={index} className="flex gap-5 border-b border-[var(--line)] pb-6"><span className="display text-3xl text-[var(--rose)]">{String(index + 1).padStart(2, "0")}</span><p className="pt-1 leading-7 text-[var(--ink-soft)]">{instruction}</p></li>)}</ol></section>
         </main>
+        <SiteFooter />
     </>;
 }
