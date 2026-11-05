@@ -10,6 +10,12 @@ export async function generateStaticParams() {
     return recipes.map((recipe) => ({ slug: recipe.slug }));
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+    const { slug } = await params;
+    const recipe = await getPublishedRecipe(slug);
+    return { title: recipe ? `Sweetly - ${recipe.title}` : "Sweetly" };
+}
+
 export default async function RecipePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const recipe = await getPublishedRecipe(slug);

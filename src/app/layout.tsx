@@ -13,7 +13,7 @@ const displayFont = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Sweetly | Recettes maison",
+  title: "Sweetly - Accueil",
   description: "Les recettes maison de Sweetly : gâteaux, desserts, boissons et créations gourmandes.",
   icons: { icon: "/logo_sweetly.png" },
 };
