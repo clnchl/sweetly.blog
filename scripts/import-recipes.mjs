@@ -1,16 +1,24 @@
+// Importe les recettes de src/data/recipes.ts dans la base et copie leurs photos sur Vercel Blob.
+// Peut être relancé sans risque : une recette déjà présente n'est jamais modifiée.
 import { readFileSync } from "node:fs";
 import { PrismaClient } from "@prisma/client";
+import { put } from "@vercel/blob";
+import sharp from "sharp";
+
+const oldSite = "https://sweetlybyceline.vercel.app/";
+const categoryOrder = ["Gâteaux & desserts", "Boissons", "Pâtes", "Crèmes", "Desserts asiatiques"];
 
 function loadEnvironment() {
-  for (const line of readFileSync(".env", "utf8").split(/\r?\n/)) {
-    const match = line.match(/^([^#=]+)=(.*)$/);
-    if (!match) continue;
-    process.env[match[1]] ??= match[2].replace(/^"|"$/g, "");
+  for (const file of [".env.local", ".env"]) {
+    for (const line of readFileSync(file, "utf8").split(/\r?\n/)) {
+      const match = line.match(/^([^#=]+)=(.*)$/);
+      if (match) process.env[match[1]] ??= match[2].replace(/^"|"$/g, "");
+    }
   }
 }
 
 function slugify(value) {
-  return value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return value.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
 function categoryFor(value) {
@@ -28,9 +36,12 @@ function ingredientsFor(recipe) {
   return recipe.ingredients ?? [];
 }
 
-function minutes(value) {
-  const match = String(value ?? "").match(/\d+/);
-  return match ? Number(match[0]) : 0;
+async function copyPhoto(slug, path) {
+  const response = await fetch(oldSite + path);
+  if (!response.ok) return null;
+  const photo = await sharp(Buffer.from(await response.arrayBuffer())).rotate().resize({ width: 1800, height: 1800, fit: "inside", withoutEnlargement: true }).jpeg({ quality: 84, mozjpeg: true }).toBuffer();
+  const blob = await put(`recettes/${slug}.jpg`, photo, { access: "public", contentType: "image/jpeg", addRandomSuffix: true });
+  return blob.url;
 }
 
 loadEnvironment();
@@ -40,24 +51,36 @@ const start = source.indexOf("const sourceRecipes = ") + "const sourceRecipes = 
 const end = source.indexOf("\n];\n\nfunction slugify", start) + 2;
 const recipes = JSON.parse(source.slice(start, end));
 
+// L'ordre de création fixe l'ordre des filtres sur le site.
+const baseTime = Date.now() - 86_400_000;
+for (const [index, name] of categoryOrder.entries()) {
+  await prisma.category.upsert({ where: { name }, update: {}, create: { name, slug: slugify(name), createdAt: new Date(baseTime + index * 1000) } });
+}
+
 let created = 0;
 let skipped = 0;
-for (const sourceRecipe of recipes) {
+const withoutPhoto = [];
+for (const [index, sourceRecipe] of recipes.entries()) {
   const slug = slugify(sourceRecipe.nom);
   if (await prisma.recipe.findUnique({ where: { slug }, select: { id: true } })) { skipped++; continue; }
   const categoryName = categoryFor(`${sourceRecipe.nom} ${sourceRecipe.categorie ?? "desserts"}`);
-  const category = await prisma.category.upsert({ where: { name: categoryName }, update: {}, create: { name: categoryName, slug: slugify(categoryName) } });
-  const ingredients = ingredientsFor(sourceRecipe);
+  const category = await prisma.category.findUniqueOrThrow({ where: { name: categoryName } });
+  const image = await copyPhoto(slug, sourceRecipe.image);
+  if (!image) withoutPhoto.push(sourceRecipe.nom);
   await prisma.recipe.create({ data: {
-    title: sourceRecipe.nom, slug, categoryId: category.id,
-    image: `https://sweetlybyceline.vercel.app/${sourceRecipe.image}`,
+    title: sourceRecipe.nom, slug, categoryId: category.id, image,
     description: `Une recette maison Sweetly à découvrir dans la catégorie ${categoryName.toLowerCase()}.`,
-    servings: sourceRecipe.quantité ?? "Non indiquée", preparationTime: minutes(sourceRecipe.prepTime), cookingTime: sourceRecipe.cookTime ? minutes(sourceRecipe.cookTime) : null,
-    ingredients: { create: ingredients.map((name, order) => ({ name, quantity: "", order })) },
+    servings: sourceRecipe.quantité ?? "Non indiqué",
+    preparationTime: sourceRecipe.prepTime ?? "Non indiqué",
+    cookingTime: sourceRecipe.cookTime ?? null,
+    // Les recettes sont listées de la plus récente à la plus ancienne : on conserve l'ordre actuel du site.
+    createdAt: new Date(baseTime - index * 1000),
+    ingredients: { create: ingredientsFor(sourceRecipe).map((name, order) => ({ name, quantity: "", order })) },
     utensils: { create: (sourceRecipe.ustensiles ?? []).map((name, order) => ({ name, order })) },
-    instructions: { create: (sourceRecipe.instructions ?? []).map((content, index) => ({ content, step: index + 1 })) },
+    instructions: { create: (sourceRecipe.instructions ?? []).map((content, position) => ({ content, step: position + 1 })) },
   } });
   created++;
+  console.log(`${created}. ${sourceRecipe.nom}${image ? "" : " (sans photo)"}`);
 }
 await prisma.$disconnect();
-console.log(`${created} recettes importées, ${skipped} déjà présentes.`);
+console.log(`${created} recettes importées, ${skipped} déjà présentes, ${withoutPhoto.length} sans photo.`);

@@ -14,6 +14,19 @@ model AdminUser {
   createdAt    DateTime @default(now())
 }
 
+model AdminSession {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model LoginAttempt {
+  key         String   @id
+  failures    Int      @default(0)
+  windowStart DateTime @default(now())
+}
+
 model Category {
   id        String   @id @default(cuid())
   name      String   @unique
@@ -23,32 +36,32 @@ model Category {
 }
 
 model Recipe {
-  id              String       @id @default(cuid())
+  id              String        @id @default(cuid())
   title           String
-  slug            String       @unique
+  slug            String        @unique
   description     String?
-  image           String
+  image           String?
   servings        String
-  preparationTime Int
-  cookingTime     Int?
-  likes           Int          @default(0)
+  preparationTime String
+  cookingTime     String?
+  published       Boolean       @default(true)
   categoryId      String
-  category        Category     @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  category        Category      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   ingredients     Ingredient[]
   utensils        Utensil[]
   instructions    Instruction[]
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model Ingredient {
-  id       String @id @default(cuid())
+  id       String  @id @default(cuid())
   quantity String
   unit     String?
   name     String
-  order    Int    @default(0)
+  order    Int     @default(0)
   recipeId String
-  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipe   Recipe  @relation(fields: [recipeId], references: [id], onDelete: Cascade)
 }
 
 model Utensil {

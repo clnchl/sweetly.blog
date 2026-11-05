@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { cookieName } from "@/lib/admin-auth";
+import { endSession, isSameOrigin } from "@/lib/admin-auth";
 
-export async function POST() {
-    const response = NextResponse.json({ ok: true });
-    response.cookies.set(cookieName, "", { httpOnly: true, expires: new Date(0), sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/" });
-    return response;
+export async function POST(request: Request) {
+  if (!isSameOrigin(request)) return NextResponse.json({ error: "Requête refusée." }, { status: 403 });
+  const response = NextResponse.json({ ok: true });
+  await endSession(response);
+  return response;
 }

@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:validate": "prisma validate",
+    "db:deploy": "prisma migrate deploy",
     "db:import-recipes": "node scripts/import-recipes.mjs",
-    "db:migrate": "prisma migrate dev --name init"
+    "db:migrate": "prisma migrate dev --name init",
+    "admin:password": "node scripts/admin-password.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
+    "@vercel/blob": "^2.8.2",
     "bcryptjs": "^3.0.3",
     "next": "16.3.5",
     "react": "19.2.8",
