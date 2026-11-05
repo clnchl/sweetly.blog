@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Photo à venir">
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" role="img" aria-label="Photo à venir">
   <rect width="800" height="800" fill="#ffe3e3"/>
   <g fill="none" stroke="#ff8da1" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
     <path d="M292 400h216l-26 142a20 20 0 0 1-20 16H338a20 20 0 0 1-20-16z"/>

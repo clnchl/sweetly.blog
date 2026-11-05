@@ -142,7 +142,7 @@ export function RecipeForm({ recipe, categories }: { recipe?: AdminRecipe; categ
         <div>
           <p className="text-sm font-bold">Photo</p>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={shownImage ?? recipePlaceholderImage} alt="Aperçu de la recette" className="mt-2 h-72 w-full rounded-2xl border border-[var(--line)] object-cover" />
+          <img src={shownImage ?? recipePlaceholderImage} alt="Aperçu de la recette" className="mt-2 h-72 w-full rounded-2xl border border-[var(--line)] bg-[var(--cream)] object-contain" />
           <div className="mt-3 flex flex-wrap items-center gap-4">
             <label className="cursor-pointer rounded-full border border-[var(--line)] px-4 py-2 text-sm font-bold focus-within:border-[var(--rose)]">
               {shownImage ? "Changer la photo" : "Ajouter une photo"}
