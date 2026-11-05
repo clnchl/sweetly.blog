@@ -104,7 +104,7 @@ export function AdminDashboard({ recipes, categories, notice }: { recipes: Admin
         {filtered.map((recipe) => <li key={recipe.slug} className="flex flex-col gap-3 py-4 md:flex-row md:items-center md:justify-between">
           <div className="flex min-w-0 items-center gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={recipe.image ?? recipePlaceholderImage} alt="" loading="lazy" className="h-14 w-14 flex-none rounded-xl bg-[var(--cream)] object-contain" />
+            <img src={recipe.image ?? recipePlaceholderImage} alt="" loading="lazy" className="h-14 w-14 flex-none rounded-xl bg-[var(--cream)] object-cover" />
             <div className="min-w-0">
               <p className="truncate font-semibold">{recipe.title}</p>
               <p className="mt-1 text-sm text-[var(--ink-soft)]">

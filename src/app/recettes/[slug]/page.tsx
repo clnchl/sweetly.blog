@@ -27,7 +27,7 @@ export default async function RecipePage({ params }: { params: Promise<{ slug: s
         <main className="site-shell py-12 md:py-20">
             <Link href="/recettes" className="text-sm font-bold text-[var(--rose-dark)]">← Retour aux recettes</Link>
             <div className="mt-10 grid gap-12 lg:grid-cols-[.95fr_1.05fr] lg:items-start">
-                <img src={recipe.image} alt={recipe.title} className="mx-auto block h-auto max-h-[85vh] w-auto max-w-full rounded-[30px] soft-shadow" />
+                <img src={recipe.image} alt={recipe.title} className="mx-auto block aspect-[3/4] w-full max-w-[520px] rounded-[30px] object-cover soft-shadow" />
                 <div>
                     <p className="eyebrow">{recipe.category}</p>
                     <h1 className="display mt-4 text-[clamp(3rem,15vw,3.75rem)] font-semibold leading-none md:text-8xl">{recipe.title}</h1>
