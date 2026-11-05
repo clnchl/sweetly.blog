@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fffaf5;
-  --foreground: #30241f;
-  --ink-soft: #765f54;
-  --rose: #bb6b5d;
-  --rose-dark: #8f4b42;
-  --cream: #f7eadb;
-  --line: #ead9ca;
+  --background: #fff8f6;
+  --foreground: #4b2c20;
+  --ink-soft: #5a3b33;
+  --rose: #ff8da1;
+  --rose-dark: #b03358;
+  --cream: #ffe3e3;
+  --header: #ffb6b9;
+  --line: #ffd6d9;
 }
 
 @theme inline {
@@ -45,6 +46,7 @@ input {
   border-radius: 0.75rem;
   background: white;
   padding: 0.75rem 1rem;
+  font-weight: 400;
   outline: none;
 }
 
@@ -71,7 +73,7 @@ input {
 }
 
 .soft-shadow {
-  box-shadow: 0 18px 50px rgba(82, 51, 38, 0.1);
+  box-shadow: 0 18px 50px rgba(75, 44, 32, 0.1);
 }
 
 .recipe-image {
