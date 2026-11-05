@@ -12,7 +12,6 @@
     "db:validate": "prisma validate",
     "db:deploy": "prisma migrate deploy",
     "db:import-recipes": "node scripts/import-recipes.mjs",
-    "db:migrate": "prisma migrate dev --name init",
     "admin:password": "node scripts/admin-password.mjs"
   },
   "dependencies": {
