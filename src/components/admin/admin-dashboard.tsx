@@ -1,5 +1,6 @@
 "use client";
 
+import { RecipeImage } from "@/components/recipe-image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
@@ -103,8 +104,7 @@ export function AdminDashboard({ recipes, categories, notice }: { recipes: Admin
       <ul className="mt-2 divide-y divide-[var(--line)]">
         {filtered.map((recipe) => <li key={recipe.slug} className="flex flex-col gap-3 py-4 md:flex-row md:items-center md:justify-between">
           <div className="flex min-w-0 items-center gap-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={recipe.image ?? recipePlaceholderImage} alt="" loading="lazy" className="h-14 w-14 flex-none rounded-xl bg-[var(--cream)] object-contain" />
+            <RecipeImage src={recipe.image ?? recipePlaceholderImage} alt="" loading="lazy" className="h-14 w-14 flex-none rounded-xl" />
             <div className="min-w-0">
               <p className="truncate font-semibold">{recipe.title}</p>
               <p className="mt-1 text-sm text-[var(--ink-soft)]">
