@@ -8,7 +8,6 @@ export type Recipe = {
   title: string;
   category: string;
   image: string;
-  description: string;
   prep: string;
   bake: string;
   servings: string;
@@ -57,7 +56,6 @@ export function toRecipe(recipe: RecipeWithDetails): Recipe {
     title: recipe.title,
     category: recipe.category.name,
     image: recipe.image ?? recipePlaceholderImage,
-    description: recipe.description ?? "",
     prep: recipe.preparationTime,
     bake: recipe.cookingTime ?? "Non indiquée",
     servings: recipe.servings,

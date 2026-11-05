@@ -15,7 +15,6 @@ export function RecipeForm({ recipe, categories }: { recipe?: AdminRecipe; categ
   const router = useRouter();
   const [title, setTitle] = useState(recipe?.title ?? "");
   const [categoryId, setCategoryId] = useState(recipe?.categoryId ?? categories[0]?.id ?? "");
-  const [description, setDescription] = useState(recipe?.description ?? "");
   const [prep, setPrep] = useState(recipe?.prep ?? "");
   const [bake, setBake] = useState(recipe?.bake ?? "");
   const [servings, setServings] = useState(recipe?.servings ?? "");
@@ -85,7 +84,7 @@ export function RecipeForm({ recipe, categories }: { recipe?: AdminRecipe; categ
       }
       setSaving("Enregistrement...");
       const payload = {
-        title, categoryId, description, prep, bake, servings, published, image: imageUrl,
+        title, categoryId, description: recipe?.description ?? "", prep, bake, servings, published, image: imageUrl,
         ingredients: lists.ingredients.map((item) => item.trim()).filter(Boolean),
         utensils: lists.utensils.map((item) => item.trim()).filter(Boolean),
         instructions: lists.instructions.map((item) => item.trim()).filter(Boolean),
@@ -123,9 +122,6 @@ export function RecipeForm({ recipe, categories }: { recipe?: AdminRecipe; categ
             <select required value={categoryId} onChange={(event) => change(setCategoryId)(event.target.value)} className="admin-input">
               {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
             </select>
-          </label>
-          <label className="block text-sm font-bold">Description
-            <textarea maxLength={2000} value={description} onChange={(event) => change(setDescription)(event.target.value)} rows={3} className="admin-input" />
           </label>
           <div className="grid gap-4 sm:grid-cols-3">
             <label className="text-sm font-bold">Préparation

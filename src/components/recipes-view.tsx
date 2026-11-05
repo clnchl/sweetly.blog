@@ -11,7 +11,7 @@ export function RecipesView({ recipes, categories }: { recipes: Recipe[]; catego
     const [category, setCategory] = useState("Toutes");
     const filtered = useMemo(() => recipes.filter((recipe) => {
         const matchesCategory = category === "Toutes" || recipe.category === category;
-        const haystack = `${recipe.title} ${recipe.category} ${recipe.description} ${recipe.ingredients.join(" ")}`.toLowerCase();
+        const haystack = `${recipe.title} ${recipe.category} ${recipe.ingredients.join(" ")}`.toLowerCase();
         return matchesCategory && haystack.includes(query.toLowerCase());
     }), [category, query, recipes]);
 
