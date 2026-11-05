@@ -160,7 +160,7 @@ export function RecipeForm({ recipe, categories }: { recipe?: AdminRecipe; categ
         <ListEditor title="Étapes" field="instructions" items={lists.instructions} update={updateList} placeholder="Décris cette étape..." multiline />
       </div>
 
-      <label className="mt-10 flex cursor-pointer items-start gap-3 rounded-2xl bg-[#fbf2e8] p-4 text-sm">
+      <label className="mt-10 flex cursor-pointer items-start gap-3 rounded-2xl bg-[#ffe3e3] p-4 text-sm">
         <input type="checkbox" checked={published} onChange={(event) => change(setPublished)(event.target.checked)} className="mt-1 h-4 w-4 accent-[var(--rose-dark)]" />
         <span><strong>Publier sur le site</strong><span className="mt-1 block text-[var(--ink-soft)]">Décoché, la recette reste un brouillon visible uniquement ici.</span></span>
       </label>

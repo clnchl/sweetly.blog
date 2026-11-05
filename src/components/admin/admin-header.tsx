@@ -17,9 +17,9 @@ export function AdminHeader() {
     setBusy(false);
   }
 
-  const linkClass = (active: boolean) => `!text-sm !font-semibold hover:text-[var(--rose)] ${active ? "text-[var(--rose-dark)]" : ""}`;
+  const linkClass = (active: boolean) => `!text-sm !font-semibold hover:!text-white ${active ? "underline underline-offset-4" : ""}`;
 
-  return <header className="border-b border-[var(--line)] bg-white">
+  return <header className="border-b border-[var(--line)] bg-[var(--header)]">
     <div className="site-shell flex min-h-[76px] flex-wrap items-center justify-between gap-x-6 gap-y-2 !py-3">
       <Link href="/admin" className="flex items-center gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -30,7 +30,7 @@ export function AdminHeader() {
         <Link href="/admin" className={linkClass(pathname === "/admin" || pathname.startsWith("/admin/recettes"))}>Recettes</Link>
         <Link href="/admin/categories" className={linkClass(pathname === "/admin/categories")}>Catégories</Link>
         <Link href="/" className={linkClass(false)}>Voir le site</Link>
-        <button type="button" onClick={logout} disabled={busy} className="!text-sm !font-bold text-[var(--rose-dark)] disabled:opacity-60">Déconnexion</button>
+        <button type="button" onClick={logout} disabled={busy} className="!text-sm !font-bold hover:!text-white disabled:opacity-60">Déconnexion</button>
       </nav>
     </div>
   </header>;
