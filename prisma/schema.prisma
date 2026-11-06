@@ -45,6 +45,7 @@ model Recipe {
   preparationTime String
   cookingTime     String?
   published       Boolean       @default(true)
+  featured        Boolean       @default(false)
   categoryId      String
   category        Category      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   ingredients     Ingredient[]

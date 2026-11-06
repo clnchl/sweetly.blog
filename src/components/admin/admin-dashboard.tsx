@@ -3,7 +3,7 @@
 import { RecipeImage } from "@/components/recipe-image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useOptimistic, useState, useTransition } from "react";
 import { recipePlaceholderImage, type AdminRecipe } from "@/lib/recipe";
 
 type Category = { id: string; name: string; recipeCount: number };
@@ -38,6 +38,10 @@ export function AdminDashboard({ recipes, categories, notice }: { recipes: Admin
     });
   }, [recipes, query, status, categoryId]);
 
+  const publishedRecipes = recipes.filter((recipe) => recipe.published);
+  const featuredSlug = publishedRecipes.find((recipe) => recipe.featured)?.slug ?? "";
+  const [selectedFeatured, setSelectedFeatured] = useOptimistic(featuredSlug);
+
   const publishedCount = recipes.filter((recipe) => recipe.published).length;
   const withoutPhotoCount = recipes.filter((recipe) => !recipe.image).length;
 
@@ -56,6 +60,26 @@ export function AdminDashboard({ recipes, categories, notice }: { recipes: Admin
     } catch {
       setError("Connexion impossible. Vérifie ta connexion internet.");
     }
+  }
+
+  function chooseFeatured(slug: string) {
+    setError("");
+    setMessage("");
+    startTransition(async () => {
+      setSelectedFeatured(slug);
+      try {
+        const response = await fetch("/api/featured", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ slug: slug || null }) });
+        if (!response.ok) {
+          const data = await response.json().catch(() => null);
+          setError(data?.error ?? "L'opération a échoué. Réessaie.");
+          return;
+        }
+        setMessage("La recette du moment est mise à jour.");
+        router.refresh();
+      } catch {
+        setError("Connexion impossible. Vérifie ta connexion internet.");
+      }
+    });
   }
 
   function togglePublished(recipe: AdminRecipe) {
@@ -86,6 +110,16 @@ export function AdminDashboard({ recipes, categories, notice }: { recipes: Admin
       <Stat label="Catégories" value={categories.length} />
       <Stat label="Sans photo" value={withoutPhotoCount} />
     </div>
+
+    <section className="mt-8 rounded-[24px] bg-white p-5 md:p-6">
+      <h2 className="display text-3xl font-semibold">La recette du moment</h2>
+      <label className="mt-2 block text-sm text-[var(--ink-soft)]">Elle s&apos;affiche en grand sur la page d&apos;accueil.
+        <select value={selectedFeatured} disabled={pending} onChange={(event) => chooseFeatured(event.target.value)} className="admin-input max-w-xl text-[var(--foreground)] disabled:opacity-60">
+          <option value="">Automatique : la dernière recette ajoutée</option>
+          {publishedRecipes.map((recipe) => <option key={recipe.slug} value={recipe.slug}>{recipe.title}</option>)}
+        </select>
+      </label>
+    </section>
 
     <section className="mt-8 rounded-[24px] bg-white p-5 md:p-6">
       <h2 className="display text-3xl font-semibold">Mes recettes</h2>

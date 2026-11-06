@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export function HomeView({ recipes }: { recipes: Recipe[] }) {
-    const featuredRecipe = recipes.find((recipe) => recipe.slug === "moelleux-au-chocolat") ?? recipes[0];
+    const featuredRecipe = recipes.find((recipe) => recipe.featured) ?? recipes[0];
 
     return <>
         <SiteHeader />
