@@ -4,6 +4,7 @@ import { z } from "zod";
 export const recipePlaceholderImage = "/recette-sans-photo.svg";
 
 export type Recipe = {
+  featured: boolean;
   slug: string;
   title: string;
   category: string;
@@ -17,6 +18,7 @@ export type Recipe = {
 };
 
 export type AdminRecipe = {
+  featured: boolean;
   slug: string;
   title: string;
   categoryId: string;
@@ -52,6 +54,7 @@ function ingredientLabel(ingredient: RecipeWithDetails["ingredients"][number]) {
 
 export function toRecipe(recipe: RecipeWithDetails): Recipe {
   return {
+    featured: recipe.featured,
     slug: recipe.slug,
     title: recipe.title,
     category: recipe.category.name,
@@ -67,6 +70,7 @@ export function toRecipe(recipe: RecipeWithDetails): Recipe {
 
 export function toAdminRecipe(recipe: RecipeWithDetails): AdminRecipe {
   return {
+    featured: recipe.featured,
     slug: recipe.slug,
     title: recipe.title,
     categoryId: recipe.categoryId,
